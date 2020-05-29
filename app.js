@@ -6,7 +6,13 @@ const port = 3000
 
 app.use((req, res, next) => {
   const now = new Date()
-  console.log(now.toLocaleString('zh-TW', { timeZone: "Asia/Taipei", hour12: false }), "|", req.method, "From ", req.originalUrl)
+  const reqMessage = `${now.toLocaleString('zh-TW', { timeZone: "Asia/Taipei", hour12: false })} | ${req.method} From ${req.originalUrl}`
+
+
+  res.on('finish', () => {
+    const resTime = new Date()
+    console.log(`${reqMessage} | total time: ${Math.abs(resTime - now)}ms`)
+  })
 
 
   next()
